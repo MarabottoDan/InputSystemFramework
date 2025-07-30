@@ -5,6 +5,7 @@
 #endif
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace UnityTemplateProjects
 {
@@ -82,7 +83,10 @@ namespace UnityTemplateProjects
             m_InterpolatingCameraState.SetFromTransform(transform);
         }
 
-        Vector3 GetInputTranslationDirection()
+
+
+
+       Vector3 GetInputTranslationDirection()
         {
             Vector3 direction = new Vector3();
             if (Input.GetKey(KeyCode.W))
@@ -166,7 +170,7 @@ namespace UnityTemplateProjects
 #elif USE_INPUT_SYSTEM 
             // TODO: make the new input system work
 #endif
-
+           
             m_TargetCameraState.Translate(translation);
 
             // Framerate-independent interpolation

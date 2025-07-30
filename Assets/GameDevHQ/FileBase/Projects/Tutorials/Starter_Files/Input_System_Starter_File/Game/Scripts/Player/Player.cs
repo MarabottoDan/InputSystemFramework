@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Scripts.LiveObjects;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.Player
 {
+
     [RequireComponent(typeof(CharacterController))]
     public class Player : MonoBehaviour
     {
+        private PlayerInputAction _input; //DM
+        private Vector2 _inputDirection; //DM
+
         private CharacterController _controller;
         private Animator _anim;
         [SerializeField]
@@ -37,6 +42,11 @@ namespace Game.Scripts.Player
 
         private void Start()
         {
+            _input = new PlayerInputAction(); //DM
+            _input.Player.Enable(); //DM
+            _input.Player.Movement.performed += Movement_performed; //DM
+            _input.Player.Movement.canceled += Movement_canceled; //DM
+
             _controller = GetComponent<CharacterController>();
 
             if (_controller == null)
@@ -48,14 +58,59 @@ namespace Game.Scripts.Player
                 Debug.Log("Failed to connect the Animator");
         }
 
+        private void Movement_canceled(InputAction.CallbackContext obj)//DM
+        {
+            _inputDirection = Vector2.zero;
+            Debug.Log("Move canceled");
+        }
+
+        private void Movement_performed(InputAction.CallbackContext context)//DM
+        {
+            Debug.Log("Walking");
+            _inputDirection = context.ReadValue<Vector2>();
+
+            var move = context.ReadValue<Vector2>();
+
+            transform.Translate(move * Time.deltaTime * 5);
+        }
+
         private void Update()
         {
-            if (_canMove == true)
-                CalcutateMovement();
+            if (_canMove == true);
+            // CalcutateMovement();
+            HandleMovement();//DM
+           
 
         }
 
-        private void CalcutateMovement()
+        private void HandleMovement()//DM
+        {
+            _playerGrounded = _controller.isGrounded;
+
+            
+            float h = _inputDirection.x; 
+            float v = _inputDirection.y; 
+
+           
+            transform.Rotate(transform.up, h);
+
+            
+            var direction = transform.forward * v;
+            var velocity = direction * _speed;
+
+            
+            _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
+
+            
+            if (_playerGrounded)
+                velocity.y = 0f;
+            else
+                velocity.y += -20f * Time.deltaTime;
+
+            _controller.Move(velocity * Time.deltaTime);
+        }
+
+        /*private void CalcutateMovement()
         {
             _playerGrounded = _controller.isGrounded;
             float h = Input.GetAxisRaw("Horizontal");
@@ -79,7 +134,7 @@ namespace Game.Scripts.Player
             
             _controller.Move(velocity * Time.deltaTime);                      
 
-        }
+        }*/
 
         private void InteractableZone_onZoneInteractionComplete(InteractableZone zone)
         {
