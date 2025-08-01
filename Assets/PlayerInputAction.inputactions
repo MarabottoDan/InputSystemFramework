@@ -13,6 +13,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PickupAndDropBomb",
+                    "type": "Button",
+                    "id": "3b654c1d-d40d-4fa1-8e64-d707bd10182f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DetonateBomb",
+                    "type": "Button",
+                    "id": "a4d7c041-2c5a-4751-8355-5f1e0ff16994",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HackCameras",
+                    "type": "Button",
+                    "id": "94f4d276-1114-4c5e-a68a-a94a647d22c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -70,6 +97,39 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8956b48d-70e1-46ef-8bbb-609e30a9e843",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickupAndDropBomb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e1990260-b8ae-482f-b682-741e016e3aa1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DetonateBomb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9de1e494-74cd-4b31-bdf9-30e091b1f547",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Hold(duration=3)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HackCameras",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

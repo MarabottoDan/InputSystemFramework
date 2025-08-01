@@ -35,6 +35,33 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PickupAndDropBomb"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b654c1d-d40d-4fa1-8e64-d707bd10182f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DetonateBomb"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4d7c041-2c5a-4751-8355-5f1e0ff16994"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HackCameras"",
+                    ""type"": ""Button"",
+                    ""id"": ""94f4d276-1114-4c5e-a68a-a94a647d22c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +119,39 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8956b48d-70e1-46ef-8bbb-609e30a9e843"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickupAndDropBomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1990260-b8ae-482f-b682-741e016e3aa1"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DetonateBomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9de1e494-74cd-4b31-bdf9-30e091b1f547"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold(duration=3)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HackCameras"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +161,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+        m_Player_PickupAndDropBomb = m_Player.FindAction("PickupAndDropBomb", throwIfNotFound: true);
+        m_Player_DetonateBomb = m_Player.FindAction("DetonateBomb", throwIfNotFound: true);
+        m_Player_HackCameras = m_Player.FindAction("HackCameras", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,11 +224,17 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Movement;
+    private readonly InputAction m_Player_PickupAndDropBomb;
+    private readonly InputAction m_Player_DetonateBomb;
+    private readonly InputAction m_Player_HackCameras;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
+        public InputAction @PickupAndDropBomb => m_Wrapper.m_Player_PickupAndDropBomb;
+        public InputAction @DetonateBomb => m_Wrapper.m_Player_DetonateBomb;
+        public InputAction @HackCameras => m_Wrapper.m_Player_HackCameras;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -178,6 +247,15 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @PickupAndDropBomb.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickupAndDropBomb;
+                @PickupAndDropBomb.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickupAndDropBomb;
+                @PickupAndDropBomb.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickupAndDropBomb;
+                @DetonateBomb.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDetonateBomb;
+                @DetonateBomb.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDetonateBomb;
+                @DetonateBomb.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDetonateBomb;
+                @HackCameras.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
+                @HackCameras.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
+                @HackCameras.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -185,6 +263,15 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @PickupAndDropBomb.started += instance.OnPickupAndDropBomb;
+                @PickupAndDropBomb.performed += instance.OnPickupAndDropBomb;
+                @PickupAndDropBomb.canceled += instance.OnPickupAndDropBomb;
+                @DetonateBomb.started += instance.OnDetonateBomb;
+                @DetonateBomb.performed += instance.OnDetonateBomb;
+                @DetonateBomb.canceled += instance.OnDetonateBomb;
+                @HackCameras.started += instance.OnHackCameras;
+                @HackCameras.performed += instance.OnHackCameras;
+                @HackCameras.canceled += instance.OnHackCameras;
             }
         }
     }
@@ -192,5 +279,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnPickupAndDropBomb(InputAction.CallbackContext context);
+        void OnDetonateBomb(InputAction.CallbackContext context);
+        void OnHackCameras(InputAction.CallbackContext context);
     }
 }

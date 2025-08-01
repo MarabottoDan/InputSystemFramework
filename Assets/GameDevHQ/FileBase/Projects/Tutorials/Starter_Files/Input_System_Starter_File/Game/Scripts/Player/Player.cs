@@ -14,6 +14,10 @@ namespace Game.Scripts.Player
         private PlayerInputAction _input; //DM
         private Vector2 _inputDirection; //DM
 
+        //Interactable Zones DM
+
+        private InteractableZone _currentZone;
+
         private CharacterController _controller;
         private Animator _anim;
         [SerializeField]
@@ -47,6 +51,15 @@ namespace Game.Scripts.Player
             _input.Player.Movement.performed += Movement_performed; //DM
             _input.Player.Movement.canceled += Movement_canceled; //DM
 
+            //Interactions DM
+
+            _input.Player.PickupAndDropBomb.performed += PickupAndDropBomb_performed;//DM
+            _input.Player.DetonateBomb.performed += DetonateBomb_performed;//DM
+            _input.Player.HackCameras.performed += HackCameras_performed;//DM
+            _input.Player.HackCameras.canceled += HackCameras_canceled;//DM
+
+
+
             _controller = GetComponent<CharacterController>();
 
             if (_controller == null)
@@ -57,6 +70,53 @@ namespace Game.Scripts.Player
             if (_anim == null)
                 Debug.Log("Failed to connect the Animator");
         }
+
+
+        private void PickupAndDropBomb_performed(InputAction.CallbackContext obj)//DM
+        {
+            TryPressInteract();
+        }
+
+        private void DetonateBomb_performed(InputAction.CallbackContext obj)//DM
+        {
+            TryPressInteract();
+        }
+
+        private void HackCameras_performed(InputAction.CallbackContext obj)//DM
+        {
+            TryStartHold();
+        }
+
+        private void HackCameras_canceled(InputAction.CallbackContext obj)//DM
+        {
+            TryEndHold();
+        }
+
+        private void TryPressInteract()
+        {
+            if (_currentZone != null)
+            {
+                _currentZone.TriggerZonePress();
+            }
+        }
+
+        private void TryStartHold()
+        {
+            if (_currentZone != null)
+            {
+                _currentZone.TriggerZoneHoldStart();
+            }
+        }
+
+        private void TryEndHold()
+        {
+            if (_currentZone != null)
+            {
+                _currentZone.TriggerZoneHoldEnd();
+            }
+        }
+
+
 
         private void Movement_canceled(InputAction.CallbackContext obj)//DM
         {
@@ -109,6 +169,19 @@ namespace Game.Scripts.Player
 
             _controller.Move(velocity * Time.deltaTime);
         }
+
+        private void OnTriggerEnter(Collider other) //DM
+        {
+            if (other.TryGetComponent(out InteractableZone zone))
+                _currentZone = zone;
+        }
+
+        private void OnTriggerExit(Collider other) //DM
+        {
+            if (other.TryGetComponent(out InteractableZone zone) && _currentZone == zone)
+                _currentZone = null;
+        }
+
 
         /*private void CalcutateMovement()
         {

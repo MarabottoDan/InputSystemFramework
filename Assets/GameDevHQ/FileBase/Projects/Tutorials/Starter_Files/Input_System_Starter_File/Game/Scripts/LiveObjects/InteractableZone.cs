@@ -122,7 +122,7 @@ namespace Game.Scripts.LiveObjects
 
         private void Update()
         {
-            if (_inZone == true)
+           /* if (_inZone == true)
             {
 
                 if (Input.GetKeyDown(_zoneKeyInput) && _keyState != KeyState.PressHold)
@@ -170,9 +170,57 @@ namespace Game.Scripts.LiveObjects
                 }
 
                
+            }*/
+        }
+        public void TriggerZonePress()//DM
+        {
+            if (!_inZone || _keyState == KeyState.PressHold) return;
+
+            switch (_zoneType)
+            {
+                case ZoneType.Collectable:
+                    if (!_itemsCollected)
+                    {
+                        CollectItems();
+                        _itemsCollected = true;
+                        UIManager.Instance.DisplayInteractableZoneMessage(false);
+                    }
+                    break;
+
+                case ZoneType.Action:
+                    if (!_actionPerformed)
+                    {
+                        PerformAction();
+                        _actionPerformed = true;
+                        UIManager.Instance.DisplayInteractableZoneMessage(false);
+                    }
+                    break;
             }
         }
-       
+
+        public void TriggerZoneHoldStart()
+        {
+            if (!_inZone || _keyState != KeyState.PressHold || _inHoldState) return;
+
+            _inHoldState = true;
+
+            if (_zoneType == ZoneType.HoldAction)
+            {
+                PerformHoldAction();
+            }
+        }
+
+        public void TriggerZoneHoldEnd()
+        {
+            if (!_inZone || _keyState != KeyState.PressHold) return;
+
+            _inHoldState = false;
+            onHoldEnded?.Invoke(_zoneID);
+        }//DM
+
+
+
+
         private void CollectItems()
         {
             foreach (var item in _zoneItems)
