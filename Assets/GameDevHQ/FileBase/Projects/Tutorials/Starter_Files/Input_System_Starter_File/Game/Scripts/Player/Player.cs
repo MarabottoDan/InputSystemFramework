@@ -14,6 +14,11 @@ namespace Game.Scripts.Player
         private PlayerInputAction _input; //DM
         private Vector2 _inputDirection; //DM
 
+        private bool _isHoldingPunch = false;//DM
+        private float _holdDuration = 0f;//DM
+        [SerializeField] private float _strongPunchThreshold = 0.75f;//DM
+
+
         //Interactable Zones DM
 
         private InteractableZone _currentZone;
@@ -58,6 +63,12 @@ namespace Game.Scripts.Player
             _input.Player.HackCameras.performed += HackCameras_performed;//DM
             _input.Player.HackCameras.canceled += HackCameras_canceled;//DM
 
+            //Punch crate
+
+            _input.Player.Punch.started += Punch_started;
+            _input.Player.Punch.performed += Punch_performed;
+            _input.Player.Punch.canceled += Punch_canceled;
+
 
 
             _controller = GetComponent<CharacterController>();
@@ -71,6 +82,38 @@ namespace Game.Scripts.Player
                 Debug.Log("Failed to connect the Animator");
         }
 
+      
+
+        private void Punch_started(InputAction.CallbackContext obj)
+        {
+            _isHoldingPunch = true;
+            _holdDuration = 0f;
+        }
+
+        private void Punch_performed(InputAction.CallbackContext obj)
+        {
+            if (_holdDuration >= _strongPunchThreshold)
+            {
+                Debug.Log("Strong punch (hold)");
+                // Send stronger force
+                TryPunchCrate(strong: true);
+            }
+            else
+            {
+                Debug.Log("Normal punch (tap)");
+                // Send regular force
+                TryPunchCrate(strong: false);
+            }
+
+            _isHoldingPunch = false;
+            _holdDuration = 0f;
+        }
+
+        private void Punch_canceled(InputAction.CallbackContext obj)
+        {
+            _isHoldingPunch = false;
+            _holdDuration = 0f;
+        }
 
         private void PickupAndDropBomb_performed(InputAction.CallbackContext obj)//DM
         {
@@ -139,9 +182,28 @@ namespace Game.Scripts.Player
             if (_canMove == true);
             // CalcutateMovement();
             HandleMovement();//DM
-           
+
+            if (_isHoldingPunch)
+            {
+                _holdDuration += Time.deltaTime;
+            }
 
         }
+
+        private void TryPunchCrate(bool strong)
+        {
+            if (_currentZone != null && _currentZone.GetZoneID() == 6)
+            {
+                Crate crate = _currentZone.GetComponentInChildren<Crate>();
+                
+                if (strong)
+                    Debug.Log("Strong punch!");
+                else
+                    Debug.Log("Normal punch.");
+
+            }
+        }
+
 
         private void HandleMovement()//DM
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Game.Scripts.LiveObjects
 {
     public class Crate : MonoBehaviour
@@ -13,12 +14,16 @@ namespace Game.Scripts.LiveObjects
         [SerializeField] private InteractableZone _interactableZone;
         private bool _isReadyToBreak = false;
 
+       
+
         private List<Rigidbody> _brakeOff = new List<Rigidbody>();
 
         private void OnEnable()
-        {
+        {      
             InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
         }
+
+      
 
         private void InteractableZone_onZoneInteractionComplete(InteractableZone zone)
         {
@@ -77,7 +82,23 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
-            InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
+            InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;           
         }
+
+        public void ApplyForce(bool strong)
+        {
+            if (_brakeOff.Count == 0) return;
+
+            int rng = Random.Range(0, _brakeOff.Count);
+            Rigidbody part = _brakeOff[rng];
+            part.constraints = RigidbodyConstraints.None;
+
+            float force = strong ? 500f : 150f;
+            Vector3 forceDir = (transform.up + transform.forward).normalized;
+
+            part.AddForce(forceDir * force, ForceMode.Impulse);
+            Debug.Log($"Force applied to crate: {(strong ? "STRONG" : "NORMAL")}");
+        }
+
     }
 }
