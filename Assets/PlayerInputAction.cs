@@ -194,6 +194,15 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Thrust"",
+                    ""type"": ""Value"",
+                    ""id"": ""fde1790a-6e23-41b2-854c-77c8d3920285"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -328,6 +337,17 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""action"": ""Tilt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d9efa31-6d3d-44f2-bffd-2cce9e3d6650"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Thrust"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -346,6 +366,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Drone_Rotate = m_Drone.FindAction("Rotate", throwIfNotFound: true);
         m_Drone_AscendDescend = m_Drone.FindAction("AscendDescend", throwIfNotFound: true);
         m_Drone_Tilt = m_Drone.FindAction("Tilt", throwIfNotFound: true);
+        m_Drone_Thrust = m_Drone.FindAction("Thrust", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -466,6 +487,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_Drone_Rotate;
     private readonly InputAction m_Drone_AscendDescend;
     private readonly InputAction m_Drone_Tilt;
+    private readonly InputAction m_Drone_Thrust;
     public struct DroneActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -474,6 +496,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @Rotate => m_Wrapper.m_Drone_Rotate;
         public InputAction @AscendDescend => m_Wrapper.m_Drone_AscendDescend;
         public InputAction @Tilt => m_Wrapper.m_Drone_Tilt;
+        public InputAction @Thrust => m_Wrapper.m_Drone_Thrust;
         public InputActionMap Get() { return m_Wrapper.m_Drone; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -495,6 +518,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Tilt.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
                 @Tilt.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
                 @Tilt.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
+                @Thrust.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnThrust;
+                @Thrust.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnThrust;
+                @Thrust.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnThrust;
             }
             m_Wrapper.m_DroneActionsCallbackInterface = instance;
             if (instance != null)
@@ -511,6 +537,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Tilt.started += instance.OnTilt;
                 @Tilt.performed += instance.OnTilt;
                 @Tilt.canceled += instance.OnTilt;
+                @Thrust.started += instance.OnThrust;
+                @Thrust.performed += instance.OnThrust;
+                @Thrust.canceled += instance.OnThrust;
             }
         }
     }
@@ -528,5 +557,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnRotate(InputAction.CallbackContext context);
         void OnAscendDescend(InputAction.CallbackContext context);
         void OnTilt(InputAction.CallbackContext context);
+        void OnThrust(InputAction.CallbackContext context);
     }
 }

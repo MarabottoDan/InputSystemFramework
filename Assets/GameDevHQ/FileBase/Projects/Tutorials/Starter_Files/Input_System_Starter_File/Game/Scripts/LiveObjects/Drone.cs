@@ -10,6 +10,7 @@ namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
+        private float _thrustInput; //DM applied with any Shift Key
         private Vector2 _tiltInput;//DM
         private float _ascendDescendInput;//DM
         private float _rotateInput;//DM
@@ -49,8 +50,20 @@ namespace Game.Scripts.LiveObjects
             _input.Drone.AscendDescend.canceled += AscendDescend_canceled;
             _input.Drone.Tilt.performed += Tilt_performed;
             _input.Drone.Tilt.canceled += Tilt_canceled;
+            _input.Drone.Thrust.performed += Thrust_performed;
+            _input.Drone.Thrust.canceled += Thrust_canceled;
 
             InteractableZone.onZoneInteractionComplete += EnterFlightMode;
+        }
+
+        private void Thrust_performed(InputAction.CallbackContext obj)
+        {
+            _thrustInput = obj.ReadValue<float>();
+        }
+
+        private void Thrust_canceled(InputAction.CallbackContext obj)
+        {
+            _thrustInput = 0f;
         }
 
         private void Tilt_performed(InputAction.CallbackContext obj)
@@ -146,18 +159,24 @@ namespace Game.Scripts.LiveObjects
                 tempRot.y -= _rotateInput * (_speed / 3);
                 transform.localRotation = Quaternion.Euler(tempRot);
             }
-           /* if (Input.GetKey(KeyCode.LeftArrow))
+
+            if (_thrustInput > 0)//DM
             {
-                var tempRot = transform.localRotation.eulerAngles;
-                tempRot.y -= _speed / 3;
-                transform.localRotation = Quaternion.Euler(tempRot);
+                _rigidbody.AddForce(transform.forward * _thrustInput * _speed, ForceMode.Acceleration);
             }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                var tempRot = transform.localRotation.eulerAngles;
-                tempRot.y += _speed / 3;
-                transform.localRotation = Quaternion.Euler(tempRot);
-            }*/
+
+            /* if (Input.GetKey(KeyCode.LeftArrow))
+             {
+                 var tempRot = transform.localRotation.eulerAngles;
+                 tempRot.y -= _speed / 3;
+                 transform.localRotation = Quaternion.Euler(tempRot);
+             }
+             if (Input.GetKey(KeyCode.RightArrow))
+             {
+                 var tempRot = transform.localRotation.eulerAngles;
+                 tempRot.y += _speed / 3;
+                 transform.localRotation = Quaternion.Euler(tempRot);
+             }*/
         }
 
         private void CalculateMovementFixedUpdate()
@@ -214,6 +233,8 @@ namespace Game.Scripts.LiveObjects
             _input.Drone.AscendDescend.canceled -= AscendDescend_canceled;//DM
             _input.Drone.Tilt.performed -= Tilt_performed;
             _input.Drone.Tilt.canceled -= Tilt_canceled;
+            _input.Drone.Thrust.performed -= Thrust_performed;
+            _input.Drone.Thrust.canceled -= Thrust_canceled;
 
 
         }
