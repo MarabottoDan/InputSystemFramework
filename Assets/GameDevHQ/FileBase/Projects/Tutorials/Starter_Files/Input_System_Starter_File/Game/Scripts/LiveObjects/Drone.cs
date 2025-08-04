@@ -10,6 +10,7 @@ namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
+        private float _rotateInput;//DM
         private PlayerInputAction _input;//DM
         private enum Tilt
         {
@@ -40,8 +41,20 @@ namespace Game.Scripts.LiveObjects
             }
             _input.Drone.Enable();
             _input.Drone.ExitMode.performed += ExitMode_performed;
+            _input.Drone.Rotate.performed += Rotate_performed;
+            _input.Drone.Rotate.canceled += Rotate_canceled;
 
             InteractableZone.onZoneInteractionComplete += EnterFlightMode;
+        }
+
+        private void Rotate_performed(InputAction.CallbackContext obj)
+        {
+            _rotateInput = obj.ReadValue<float>();
+        }
+
+        private void Rotate_canceled(InputAction.CallbackContext obj)
+        {
+            _rotateInput = 0f;
         }
 
         private void ExitMode_performed(InputAction.CallbackContext obj)//DM
@@ -101,7 +114,14 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementUpdate()
         {
-            if (Input.GetKey(KeyCode.LeftArrow))
+
+            if(_rotateInput != 0)
+            {
+                var tempRot = transform.localRotation.eulerAngles;
+                tempRot.y -= _rotateInput * (_speed / 3);
+                transform.localRotation = Quaternion.Euler(tempRot);
+            }
+           /* if (Input.GetKey(KeyCode.LeftArrow))
             {
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y -= _speed / 3;
@@ -112,7 +132,7 @@ namespace Game.Scripts.LiveObjects
                 var tempRot = transform.localRotation.eulerAngles;
                 tempRot.y += _speed / 3;
                 transform.localRotation = Quaternion.Euler(tempRot);
-            }
+            }*/
         }
 
         private void CalculateMovementFixedUpdate()
