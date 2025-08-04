@@ -10,6 +10,7 @@ namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
+        private Vector2 _tiltInput;//DM
         private float _ascendDescendInput;//DM
         private float _rotateInput;//DM
         private PlayerInputAction _input;//DM
@@ -46,8 +47,20 @@ namespace Game.Scripts.LiveObjects
             _input.Drone.Rotate.canceled += Rotate_canceled;
             _input.Drone.AscendDescend.performed += AscendDescend_performed;
             _input.Drone.AscendDescend.canceled += AscendDescend_canceled;
+            _input.Drone.Tilt.performed += Tilt_performed;
+            _input.Drone.Tilt.canceled += Tilt_canceled;
 
             InteractableZone.onZoneInteractionComplete += EnterFlightMode;
+        }
+
+        private void Tilt_performed(InputAction.CallbackContext obj)
+        {
+            _tiltInput = obj.ReadValue<Vector2>();
+        }
+
+        private void Tilt_canceled(InputAction.CallbackContext obj)
+        {
+            _tiltInput = Vector2.zero;
         }
 
         private void AscendDescend_performed(InputAction.CallbackContext obj)
@@ -168,16 +181,28 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateTilt()
         {
-            if (Input.GetKey(KeyCode.A)) 
-                transform.rotation = Quaternion.Euler(00, transform.localRotation.eulerAngles.y, 30);
-            else if (Input.GetKey(KeyCode.D))
+
+            if (_tiltInput.x < 0) // Left
+                transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 30);
+            else if (_tiltInput.x > 0) // Right
                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, -30);
-            else if (Input.GetKey(KeyCode.W))
+            else if (_tiltInput.y > 0) // Forward
                 transform.rotation = Quaternion.Euler(30, transform.localRotation.eulerAngles.y, 0);
-            else if (Input.GetKey(KeyCode.S))
+            else if (_tiltInput.y < 0) // Back
                 transform.rotation = Quaternion.Euler(-30, transform.localRotation.eulerAngles.y, 0);
-            else 
+            else
                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
+
+            /* if (Input.GetKey(KeyCode.A)) 
+                 transform.rotation = Quaternion.Euler(00, transform.localRotation.eulerAngles.y, 30);
+             else if (Input.GetKey(KeyCode.D))
+                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, -30);
+             else if (Input.GetKey(KeyCode.W))
+                 transform.rotation = Quaternion.Euler(30, transform.localRotation.eulerAngles.y, 0);
+             else if (Input.GetKey(KeyCode.S))
+                 transform.rotation = Quaternion.Euler(-30, transform.localRotation.eulerAngles.y, 0);
+             else 
+                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);*/
         }
 
         private void OnDisable()
@@ -187,6 +212,9 @@ namespace Game.Scripts.LiveObjects
             InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
             _input.Drone.AscendDescend.performed -= AscendDescend_performed;//DM
             _input.Drone.AscendDescend.canceled -= AscendDescend_canceled;//DM
+            _input.Drone.Tilt.performed -= Tilt_performed;
+            _input.Drone.Tilt.canceled -= Tilt_canceled;
+
 
         }
     }
