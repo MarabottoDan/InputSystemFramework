@@ -146,12 +146,188 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""9de1e494-74cd-4b31-bdf9-30e091b1f547"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold(duration=3)"",
+                    ""interactions"": ""Hold(duration=1)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HackCameras"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Drone"",
+            ""id"": ""7c4073da-36fc-480e-b567-3e2ca7c53a4f"",
+            ""actions"": [
+                {
+                    ""name"": ""ExitMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b7eb061-f5f6-45f2-b154-f9ab4a053630"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""021db4de-fdc4-43f1-a733-d67a3a2fc7ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AscendDescend"",
+                    ""type"": ""Button"",
+                    ""id"": ""c69f98a5-8782-4158-a281-df740c9f42f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tilt"",
+                    ""type"": ""Value"",
+                    ""id"": ""9933ef13-82c1-4c0b-bea0-b8e31e691058"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0937d86f-9edc-438c-9f44-6d87bdc8f52b"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""2e617736-f7f9-4c63-9219-565022961054"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""231ff7e7-4d29-4295-95d3-cd78a01229a1"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8fa391ca-7b54-46d9-9f3e-80dbb3824fb7"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""52a720b4-47b5-4540-afb9-d150a03f953f"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AscendDescend"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f6d5f009-ae4a-4a3b-a9ff-59325fc72940"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AscendDescend"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""99847c56-89ea-4a50-b917-5422f3d9f776"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AscendDescend"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""0e188446-107e-4be0-bec4-ed87107b02ba"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""f7a56b53-01a9-47e9-b1f6-dd66d19377b7"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""c93dda71-1c26-43c6-91fb-8a978e6f499d"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4d1f73e1-defd-4838-b573-fb84b30db452"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""efe45b4c-6db1-4d70-8143-d11fc3d0771c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -164,6 +340,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player_PickupAndDropBomb = m_Player.FindAction("PickupAndDropBomb", throwIfNotFound: true);
         m_Player_DetonateBomb = m_Player.FindAction("DetonateBomb", throwIfNotFound: true);
         m_Player_HackCameras = m_Player.FindAction("HackCameras", throwIfNotFound: true);
+        // Drone
+        m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
+        m_Drone_ExitMode = m_Drone.FindAction("ExitMode", throwIfNotFound: true);
+        m_Drone_Rotate = m_Drone.FindAction("Rotate", throwIfNotFound: true);
+        m_Drone_AscendDescend = m_Drone.FindAction("AscendDescend", throwIfNotFound: true);
+        m_Drone_Tilt = m_Drone.FindAction("Tilt", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -276,11 +458,75 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Drone
+    private readonly InputActionMap m_Drone;
+    private IDroneActions m_DroneActionsCallbackInterface;
+    private readonly InputAction m_Drone_ExitMode;
+    private readonly InputAction m_Drone_Rotate;
+    private readonly InputAction m_Drone_AscendDescend;
+    private readonly InputAction m_Drone_Tilt;
+    public struct DroneActions
+    {
+        private @PlayerInputAction m_Wrapper;
+        public DroneActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ExitMode => m_Wrapper.m_Drone_ExitMode;
+        public InputAction @Rotate => m_Wrapper.m_Drone_Rotate;
+        public InputAction @AscendDescend => m_Wrapper.m_Drone_AscendDescend;
+        public InputAction @Tilt => m_Wrapper.m_Drone_Tilt;
+        public InputActionMap Get() { return m_Wrapper.m_Drone; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DroneActions set) { return set.Get(); }
+        public void SetCallbacks(IDroneActions instance)
+        {
+            if (m_Wrapper.m_DroneActionsCallbackInterface != null)
+            {
+                @ExitMode.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnExitMode;
+                @ExitMode.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnExitMode;
+                @ExitMode.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnExitMode;
+                @Rotate.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnRotate;
+                @Rotate.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnRotate;
+                @Rotate.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnRotate;
+                @AscendDescend.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnAscendDescend;
+                @AscendDescend.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnAscendDescend;
+                @AscendDescend.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnAscendDescend;
+                @Tilt.started -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
+                @Tilt.performed -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
+                @Tilt.canceled -= m_Wrapper.m_DroneActionsCallbackInterface.OnTilt;
+            }
+            m_Wrapper.m_DroneActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ExitMode.started += instance.OnExitMode;
+                @ExitMode.performed += instance.OnExitMode;
+                @ExitMode.canceled += instance.OnExitMode;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
+                @AscendDescend.started += instance.OnAscendDescend;
+                @AscendDescend.performed += instance.OnAscendDescend;
+                @AscendDescend.canceled += instance.OnAscendDescend;
+                @Tilt.started += instance.OnTilt;
+                @Tilt.performed += instance.OnTilt;
+                @Tilt.canceled += instance.OnTilt;
+            }
+        }
+    }
+    public DroneActions @Drone => new DroneActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnPickupAndDropBomb(InputAction.CallbackContext context);
         void OnDetonateBomb(InputAction.CallbackContext context);
         void OnHackCameras(InputAction.CallbackContext context);
+    }
+    public interface IDroneActions
+    {
+        void OnExitMode(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
+        void OnAscendDescend(InputAction.CallbackContext context);
+        void OnTilt(InputAction.CallbackContext context);
     }
 }

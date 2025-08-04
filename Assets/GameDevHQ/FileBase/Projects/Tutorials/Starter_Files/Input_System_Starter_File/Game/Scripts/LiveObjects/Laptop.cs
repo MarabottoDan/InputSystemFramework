@@ -47,7 +47,7 @@ namespace Game.Scripts.LiveObjects
                     _cameras[previous].Priority = 9;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Q)) //DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
                 {
                     _hacked = false;
                     onHackEnded?.Invoke();

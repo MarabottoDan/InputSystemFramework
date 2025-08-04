@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Game.Scripts.UI;
+using UnityEngine.InputSystem; //DM
 
 namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
+        private PlayerInputAction _input;//DM
         private enum Tilt
         {
             NoTilt, Forward, Back, Left, Right
@@ -32,8 +34,27 @@ namespace Game.Scripts.LiveObjects
 
         private void OnEnable()
         {
+            if (_input == null)//DM
+            {
+                _input = new PlayerInputAction();
+            }
+            _input.Drone.Enable();
+            _input.Drone.ExitMode.performed += ExitMode_performed;
+
             InteractableZone.onZoneInteractionComplete += EnterFlightMode;
         }
+
+        private void ExitMode_performed(InputAction.CallbackContext obj)//DM
+        {
+            if (_inFlightMode)
+            {
+                _inFlightMode = false;
+                onExitFlightmode?.Invoke();
+                ExitFlightMode();
+            }
+        }
+
+        
 
         private void EnterFlightMode(InteractableZone zone)
         {
@@ -62,12 +83,12 @@ namespace Game.Scripts.LiveObjects
                 CalculateTilt();
                 CalculateMovementUpdate();
 
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _inFlightMode = false;
-                    onExitFlightmode?.Invoke();
-                    ExitFlightMode();
-                }
+               // if (Input.GetKeyDown(KeyCode.Q))//DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
+               //{
+               //   _inFlightMode = false;
+               //  onExitFlightmode?.Invoke();
+               // ExitFlightMode();
+               //}
             }
         }
 
@@ -123,6 +144,8 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
+            _input.Drone.ExitMode.performed -= ExitMode_performed;//DM
+            _input.Drone.Disable();//DM
             InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
         }
     }

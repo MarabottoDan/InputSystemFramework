@@ -55,7 +55,7 @@ namespace Game.Scripts.LiveObjects
             {
                 LiftControls();
                 CalcutateMovement();
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Q))//DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
                     ExitDriveMode();
             }
 
