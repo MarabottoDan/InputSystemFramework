@@ -10,6 +10,7 @@ namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
+        private float _ascendDescendInput;//DM
         private float _rotateInput;//DM
         private PlayerInputAction _input;//DM
         private enum Tilt
@@ -43,10 +44,21 @@ namespace Game.Scripts.LiveObjects
             _input.Drone.ExitMode.performed += ExitMode_performed;
             _input.Drone.Rotate.performed += Rotate_performed;
             _input.Drone.Rotate.canceled += Rotate_canceled;
+            _input.Drone.AscendDescend.performed += AscendDescend_performed;
+            _input.Drone.AscendDescend.canceled += AscendDescend_canceled;
 
             InteractableZone.onZoneInteractionComplete += EnterFlightMode;
         }
 
+        private void AscendDescend_performed(InputAction.CallbackContext obj)
+        {
+            _ascendDescendInput = obj.ReadValue<float>();
+        }
+
+        private void AscendDescend_canceled(InputAction.CallbackContext obj)
+        {
+            _ascendDescendInput = 0f;
+        }
         private void Rotate_performed(InputAction.CallbackContext obj)
         {
             _rotateInput = obj.ReadValue<float>();
@@ -137,15 +149,21 @@ namespace Game.Scripts.LiveObjects
 
         private void CalculateMovementFixedUpdate()
         {
-            
-            if (Input.GetKey(KeyCode.Space))
+
+            if (_ascendDescendInput != 0)
             {
-                _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
+                _rigidbody.AddForce(transform.up * _ascendDescendInput * _speed, ForceMode.Acceleration);
             }
-            if (Input.GetKey(KeyCode.V))
-            {
-                _rigidbody.AddForce(-transform.up * _speed, ForceMode.Acceleration);
-            }
+
+
+            /* if (Input.GetKey(KeyCode.Space))
+             {
+                 _rigidbody.AddForce(transform.up * _speed, ForceMode.Acceleration);
+             }
+             if (Input.GetKey(KeyCode.V))
+             {
+                 _rigidbody.AddForce(-transform.up * _speed, ForceMode.Acceleration);
+             }*/
         }
 
         private void CalculateTilt()
@@ -167,6 +185,9 @@ namespace Game.Scripts.LiveObjects
             _input.Drone.ExitMode.performed -= ExitMode_performed;//DM
             _input.Drone.Disable();//DM
             InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
+            _input.Drone.AscendDescend.performed -= AscendDescend_performed;//DM
+            _input.Drone.AscendDescend.canceled -= AscendDescend_canceled;//DM
+
         }
     }
 }
