@@ -1,11 +1,17 @@
 using System;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
     public class Forklift : MonoBehaviour
     {
+        private PlayerInputAction _input;//DM
+        private Vector2 _moveInput;//DM
+        private bool _isLiftingUp;//DM
+        private bool _isLiftingDown;//DM
+
         [SerializeField]
         private GameObject _lift, _steeringWheel, _leftWheel, _rightWheel, _rearWheels;
         [SerializeField]
@@ -25,7 +31,62 @@ namespace Game.Scripts.LiveObjects
 
         private void OnEnable()
         {
+            if (_input == null)
+            {
+                _input = new PlayerInputAction();
+            }
+
+            _input.Forklift.Enable();
+            _input.Forklift.Move.performed += Move_performed;
+            _input.Forklift.Move.canceled += Move_canceled;
+
+            _input.Forklift.LiftUp.performed += LiftUp_performed;
+            _input.Forklift.LiftUp.canceled += LiftUp_canceled;
+            _input.Forklift.LiftDown.performed += LiftDown_performed;
+            _input.Forklift.LiftDown.canceled += LiftDown_canceled;
+
+            _input.Forklift.ExitDriveMode.performed += ExitDriveMode_performed;
+
             InteractableZone.onZoneInteractionComplete += EnterDriveMode;
+        }
+
+        private void ExitDriveMode_performed(InputAction.CallbackContext obj)
+        {
+            if (_inDriveMode)
+            {
+                ExitDriveMode();
+            }
+        }
+
+        private void LiftDown_performed(InputAction.CallbackContext obj)
+        {
+            _isLiftingDown = true;
+        }
+
+        private void LiftDown_canceled(InputAction.CallbackContext obj)
+        {
+            _isLiftingDown = false;
+        }
+
+        private void LiftUp_performed(InputAction.CallbackContext obj)
+        {
+            _isLiftingUp = true;
+        }
+
+        private void LiftUp_canceled(InputAction.CallbackContext obj)
+        {
+            _isLiftingUp = false;
+
+        }
+
+        private void Move_performed(InputAction.CallbackContext obj)
+        {
+            _moveInput = obj.ReadValue<Vector2>();
+        }
+
+        private void Move_canceled(InputAction.CallbackContext obj)
+        {
+            _moveInput = Vector2.zero;
         }
 
         private void EnterDriveMode(InteractableZone zone)
@@ -55,16 +116,18 @@ namespace Game.Scripts.LiveObjects
             {
                 LiftControls();
                 CalcutateMovement();
-                if (Input.GetKeyDown(KeyCode.Q))//DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
-                    ExitDriveMode();
+               /* if (Input.GetKeyDown(KeyCode.Q))//DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
+                    ExitDriveMode();*/
             }
 
         }
 
         private void CalcutateMovement()
         {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
+            //float h = Input.GetAxisRaw("Horizontal");
+            //float v = Input.GetAxisRaw("Vertical");
+            float h = _moveInput.x;//DM
+            float v = _moveInput.y;//DM
             var direction = new Vector3(0, 0, v);
             var velocity = direction * _speed;
 
@@ -80,10 +143,15 @@ namespace Game.Scripts.LiveObjects
 
         private void LiftControls()
         {
-            if (Input.GetKey(KeyCode.R))
+            if (_isLiftingUp)//DM
                 LiftUpRoutine();
-            else if (Input.GetKey(KeyCode.T))
+            else if (_isLiftingDown)
                 LiftDownRoutine();
+
+            /* if (Input.GetKey(KeyCode.R))
+                 LiftUpRoutine();
+             else if (Input.GetKey(KeyCode.T))
+                 LiftDownRoutine();*/
         }
 
         private void LiftUpRoutine()
@@ -113,6 +181,18 @@ namespace Game.Scripts.LiveObjects
         private void OnDisable()
         {
             InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
+
+            if (_input != null)//DM
+            {
+                _input.Forklift.Move.performed -= Move_performed;
+                _input.Forklift.Move.canceled -= Move_canceled;
+                _input.Forklift.LiftUp.performed -= LiftUp_performed;
+                _input.Forklift.LiftUp.canceled -= LiftUp_canceled;
+                _input.Forklift.LiftDown.performed -= LiftDown_performed;
+                _input.Forklift.LiftDown.canceled -= LiftDown_canceled;
+                _input.Forklift.ExitDriveMode.performed -= ExitDriveMode_performed;
+                _input.Forklift.Disable();
+            }
         }
 
     }
