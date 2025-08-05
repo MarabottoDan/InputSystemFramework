@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.InputSystem;
+
 
 namespace Game.Scripts.LiveObjects
 {
     public class Laptop : MonoBehaviour
     {
+        private PlayerInputAction _inputactions;
         [SerializeField]
         private Slider _progressBar;
         [SerializeField]
@@ -27,11 +30,31 @@ namespace Game.Scripts.LiveObjects
         {
             InteractableZone.onHoldStarted += InteractableZone_onHoldStarted;
             InteractableZone.onHoldEnded += InteractableZone_onHoldEnded;
+
+            _inputactions = new PlayerInputAction();
+            _inputactions.Player.Enable();
+
+            
+
+
+            _inputactions.Player.NextCamera.performed += NextCamera_performed;
+            _inputactions.Player.ExitHack.performed += ExitHack_performed;
+        }
+
+        private void NextCamera_performed(InputAction.CallbackContext obj)
+        {
+            SwitchToNextCamera();
+        }
+
+        private void ExitHack_performed(InputAction.CallbackContext obj)
+        {
+            
+            ExitHacking();
         }
 
         private void Update()
         {
-            if (_hacked == true)
+           /* if (_hacked == true)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -47,13 +70,45 @@ namespace Game.Scripts.LiveObjects
                     _cameras[previous].Priority = 9;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Q)) //DM changed from Escape key to Q, because when I pressed Esc, game would stop playing.
+                if (Input.GetKeyDown(KeyCode.Q)) //DM changed from Escape key to G and button South Gamepad because when I pressed Esc, game would stop playing.
                 {
                     _hacked = false;
                     onHackEnded?.Invoke();
                     ResetCameras();
                 }
+            } */
+        }
+
+
+        private void SwitchToNextCamera()
+        {
+            Debug.Log("SwitchToNextCamera() called");
+            if (!_hacked)
+            {
+                Debug.Log("Aborted: not hacked.");
+                return;
             }
+
+            if (!_hacked) return;
+
+            var previous = _activeCamera;
+            _activeCamera++;
+
+            if (_activeCamera >= _cameras.Length)
+                _activeCamera = 0;
+
+            _cameras[_activeCamera].Priority = 11;
+            _cameras[previous].Priority = 9;
+        }
+
+        private void ExitHacking()
+        {
+           
+           // if (!_hacked) return;
+
+             _hacked = false;
+             onHackEnded?.Invoke();
+             ResetCameras();
         }
 
         void ResetCameras()
@@ -112,6 +167,13 @@ namespace Game.Scripts.LiveObjects
         {
             InteractableZone.onHoldStarted -= InteractableZone_onHoldStarted;
             InteractableZone.onHoldEnded -= InteractableZone_onHoldEnded;
+
+            if (_inputactions != null)
+            {
+                _inputactions.Player.NextCamera.performed -= NextCamera_performed;
+                _inputactions.Player.ExitHack.performed -= ExitHack_performed;
+                _inputactions.Player.Disable();
+            }
         }
     }
 

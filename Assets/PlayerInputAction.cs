@@ -71,6 +71,24 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4cd378d-b4e6-45b7-b6c2-07bf0ca22ffe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitHack"",
+                    ""type"": ""Button"",
+                    ""id"": ""43fc6287-66d4-4f33-b244-90253a09485c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -291,6 +309,50 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Punch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64381c2c-1527-46b5-972b-086efe89901b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8525eb4a-6457-4161-aa97-baacc1dd619a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50d43679-736e-4aee-99c2-4fc0364e3d2e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitHack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36d80e91-430c-4c0b-8fdc-65e1362407b9"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitHack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -865,6 +927,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player_DetonateBomb = m_Player.FindAction("DetonateBomb", throwIfNotFound: true);
         m_Player_HackCameras = m_Player.FindAction("HackCameras", throwIfNotFound: true);
         m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_NextCamera = m_Player.FindAction("NextCamera", throwIfNotFound: true);
+        m_Player_ExitHack = m_Player.FindAction("ExitHack", throwIfNotFound: true);
         // Drone
         m_Drone = asset.FindActionMap("Drone", throwIfNotFound: true);
         m_Drone_ExitMode = m_Drone.FindAction("ExitMode", throwIfNotFound: true);
@@ -942,6 +1006,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DetonateBomb;
     private readonly InputAction m_Player_HackCameras;
     private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_NextCamera;
+    private readonly InputAction m_Player_ExitHack;
     public struct PlayerActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -951,6 +1017,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @DetonateBomb => m_Wrapper.m_Player_DetonateBomb;
         public InputAction @HackCameras => m_Wrapper.m_Player_HackCameras;
         public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @NextCamera => m_Wrapper.m_Player_NextCamera;
+        public InputAction @ExitHack => m_Wrapper.m_Player_ExitHack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -975,6 +1043,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Punch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
                 @Punch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
                 @Punch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
+                @NextCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
+                @NextCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
+                @NextCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
+                @ExitHack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitHack;
+                @ExitHack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitHack;
+                @ExitHack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExitHack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -994,6 +1068,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Punch.started += instance.OnPunch;
                 @Punch.performed += instance.OnPunch;
                 @Punch.canceled += instance.OnPunch;
+                @NextCamera.started += instance.OnNextCamera;
+                @NextCamera.performed += instance.OnNextCamera;
+                @NextCamera.canceled += instance.OnNextCamera;
+                @ExitHack.started += instance.OnExitHack;
+                @ExitHack.performed += instance.OnExitHack;
+                @ExitHack.canceled += instance.OnExitHack;
             }
         }
     }
@@ -1127,6 +1207,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnDetonateBomb(InputAction.CallbackContext context);
         void OnHackCameras(InputAction.CallbackContext context);
         void OnPunch(InputAction.CallbackContext context);
+        void OnNextCamera(InputAction.CallbackContext context);
+        void OnExitHack(InputAction.CallbackContext context);
     }
     public interface IDroneActions
     {
