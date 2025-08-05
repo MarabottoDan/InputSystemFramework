@@ -174,13 +174,13 @@ namespace Game.Scripts.Player
 
             var move = context.ReadValue<Vector2>();
 
-            transform.Translate(move * Time.deltaTime * 5);
+            //transform.Translate(move * Time.deltaTime * 5);
         }
 
         private void Update()
         {
-            if (_canMove == true);
-            // CalcutateMovement();
+            if (_canMove == true)
+             //CalcutateMovement();
             HandleMovement();//DM
 
             if (_isHoldingPunch)
@@ -245,7 +245,7 @@ namespace Game.Scripts.Player
         }
 
 
-        /*private void CalcutateMovement()
+       /* private void CalcutateMovement()
         {
             _playerGrounded = _controller.isGrounded;
             float h = Input.GetAxisRaw("Horizontal");
@@ -288,6 +288,7 @@ namespace Game.Scripts.Player
         {
             _canMove = false;
             _followCam.Priority = 9;
+            Debug.Log("Player Control Released"); //Just wrote it
         }
 
         private void ReturnPlayerControl()
