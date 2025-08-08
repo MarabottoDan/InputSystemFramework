@@ -54,7 +54,7 @@ namespace Game.Scripts.LiveObjects
 
         private void Update()
         {
-           if (_hacked == true)
+          /* if (_hacked == true)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -76,7 +76,7 @@ namespace Game.Scripts.LiveObjects
                     onHackEnded?.Invoke();
                     ResetCameras();
                 }
-            } 
+            } */
         }
 
 
