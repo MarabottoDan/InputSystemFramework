@@ -216,10 +216,7 @@ namespace Game.Scripts.LiveObjects
 
             _inHoldState = false;
             onHoldEnded?.Invoke(_zoneID);
-        }//DM
-
-
-
+        }
 
         private void CollectItems()
         {

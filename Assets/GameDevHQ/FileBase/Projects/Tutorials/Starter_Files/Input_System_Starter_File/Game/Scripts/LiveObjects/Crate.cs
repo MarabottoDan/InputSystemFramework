@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -14,21 +14,73 @@ namespace Game.Scripts.LiveObjects
         [SerializeField] private InteractableZone _interactableZone;
         private bool _isReadyToBreak = false;
 
-       
-
         private List<Rigidbody> _brakeOff = new List<Rigidbody>();
 
+        private PlayerInputAction _input;
+        private Coroutine _punchRoutine;
+        private bool _inZone = false;
+
         private void OnEnable()
-        {      
+        {
             InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
+
+            _input = new PlayerInputAction();
+            _input.Player.Enable();
+
+            _input.Player.PunchHold.performed += PunchHold_performed;
+            _input.Player.PunchTap.performed += PunchTap_performed;         
+            _input.Player.PunchHold.canceled += PunchHold_canceled;
         }
 
-      
+        private void PunchTap_performed(InputAction.CallbackContext obj)
+        {
+            Debug.Log($"[TAP] Action: {obj.action.name}, Phase: {obj.phase}, Time: {obj.time}, Started: {obj.started}");
+
+            if (_isReadyToBreak && _brakeOff.Count > 0 && _inZone)
+            {
+                BreakPart();
+                StartCoroutine(PunchDelay());
+            }
+        }
+
+        private void PunchHold_performed(InputAction.CallbackContext obj)
+        {
+            Debug.Log($"[HOLD] Action: {obj.action.name}, Phase: {obj.phase}, Time: {obj.time}, Started: {obj.started}");
+
+            
+
+            if (_isReadyToBreak && _brakeOff.Count > 0 && _inZone)
+            {
+                BreakPart();
+                BreakPart();
+                BreakPart();
+                BreakPart();
+                StartCoroutine(PunchDelay());
+            }
+            
+        }
+
+        private void PunchHold_canceled(InputAction.CallbackContext obj)
+        {
+            Debug.Log($"HOLD CANCELED at {Time.time}");
+            // Stop breaking when released
+            if (_punchRoutine != null)
+            {
+                StopCoroutine(_punchRoutine);
+                _punchRoutine = null;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+                _inZone = true;
+        }
 
         private void InteractableZone_onZoneInteractionComplete(InteractableZone zone)
         {
-            
-            if (_isReadyToBreak == false && _brakeOff.Count >0)
+
+            if (_isReadyToBreak == false && _brakeOff.Count > 0)
             {
                 _wholeCrate.SetActive(false);
                 _brokenCrate.SetActive(true);
@@ -39,10 +91,10 @@ namespace Game.Scripts.LiveObjects
             {
                 if (_brakeOff.Count > 0)
                 {
-                    BreakPart();
-                    StartCoroutine(PunchDelay());
+                    _inZone = true;
+                    
                 }
-                else if(_brakeOff.Count == 0)
+                else if (_brakeOff.Count == 0)
                 {
                     _isReadyToBreak = false;
                     _crateCollider.enabled = false;
@@ -55,17 +107,14 @@ namespace Game.Scripts.LiveObjects
         private void Start()
         {
             _brakeOff.AddRange(_pieces);
-            
         }
-
-
 
         public void BreakPart()
         {
-            int rng = Random.Range(0, _brakeOff.Count);
+            int rng = Random.Range(0, _brakeOff.Count); 
             _brakeOff[rng].constraints = RigidbodyConstraints.None;
             _brakeOff[rng].AddForce(new Vector3(1f, 1f, 1f), ForceMode.Force);
-            _brakeOff.Remove(_brakeOff[rng]);            
+            _brakeOff.Remove(_brakeOff[rng]);
         }
 
         IEnumerator PunchDelay()
@@ -82,23 +131,15 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
-            InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;           
+            InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
+
+            if (_input != null)
+            {
+                _input.Player.PunchTap.performed -= PunchTap_performed;
+                _input.Player.PunchHold.performed -= PunchHold_performed;
+                _input.Player.PunchHold.canceled -= PunchHold_canceled;
+                _input.Player.Disable();
+            }
         }
-
-        public void ApplyForce(bool strong)
-        {
-            if (_brakeOff.Count == 0) return;
-
-            int rng = Random.Range(0, _brakeOff.Count);
-            Rigidbody part = _brakeOff[rng];
-            part.constraints = RigidbodyConstraints.None;
-
-            float force = strong ? 500f : 150f;
-            Vector3 forceDir = (transform.up + transform.forward).normalized;
-
-            part.AddForce(forceDir * force, ForceMode.Impulse);
-            Debug.Log($"Force applied to crate: {(strong ? "STRONG" : "NORMAL")}");
-        }
-
     }
 }

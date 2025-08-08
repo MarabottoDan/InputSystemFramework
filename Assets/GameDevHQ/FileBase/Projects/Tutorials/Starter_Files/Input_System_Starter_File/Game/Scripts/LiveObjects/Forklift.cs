@@ -7,10 +7,10 @@ namespace Game.Scripts.LiveObjects
 {
     public class Forklift : MonoBehaviour
     {
-        private PlayerInputAction _input;//DM
-        private Vector2 _moveInput;//DM
-        private bool _isLiftingUp;//DM
-        private bool _isLiftingDown;//DM
+        private PlayerInputAction _input;
+        private Vector2 _moveInput;
+        private bool _isLiftingUp;
+        private bool _isLiftingDown;
 
         [SerializeField]
         private GameObject _lift, _steeringWheel, _leftWheel, _rightWheel, _rearWheels;

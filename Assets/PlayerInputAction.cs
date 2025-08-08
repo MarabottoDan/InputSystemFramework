@@ -64,12 +64,21 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Punch"",
+                    ""name"": ""PunchTap"",
                     ""type"": ""Button"",
                     ""id"": ""ef1d1373-9a92-4a8f-a71d-9ea561ecaece"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PunchHold"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d12c594-4477-4864-a632-2db9e39eab93"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -250,7 +259,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""9de1e494-74cd-4b31-bdf9-30e091b1f547"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold(duration=1)"",
+                    ""interactions"": ""Hold(duration=0.7)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HackCameras"",
@@ -272,7 +281,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""422d91e7-8f72-4e9f-b692-13cf4247eb99"",
                     ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": ""Hold(duration=1)"",
+                    ""interactions"": ""Hold(duration=0.7)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""HackCameras"",
@@ -294,10 +303,10 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""94a12cf0-bfb3-4cc5-9854-8fd2bca9ea63"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold(duration=1),Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Punch"",
+                    ""action"": ""PunchTap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -305,10 +314,10 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3b34db82-636b-492c-9b11-9e9ec6bfb258"",
                     ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": ""Hold(duration=1),Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Punch"",
+                    ""action"": ""PunchTap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -353,6 +362,28 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ExitHack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3805bb6c-6244-432d-825b-ba6d704974ed"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PunchHold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20953831-8fda-4c59-8721-c3590c3417ac"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PunchHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -926,7 +957,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_Player_PickupAndDropBomb = m_Player.FindAction("PickupAndDropBomb", throwIfNotFound: true);
         m_Player_DetonateBomb = m_Player.FindAction("DetonateBomb", throwIfNotFound: true);
         m_Player_HackCameras = m_Player.FindAction("HackCameras", throwIfNotFound: true);
-        m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
+        m_Player_PunchTap = m_Player.FindAction("PunchTap", throwIfNotFound: true);
+        m_Player_PunchHold = m_Player.FindAction("PunchHold", throwIfNotFound: true);
         m_Player_NextCamera = m_Player.FindAction("NextCamera", throwIfNotFound: true);
         m_Player_ExitHack = m_Player.FindAction("ExitHack", throwIfNotFound: true);
         // Drone
@@ -1005,7 +1037,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PickupAndDropBomb;
     private readonly InputAction m_Player_DetonateBomb;
     private readonly InputAction m_Player_HackCameras;
-    private readonly InputAction m_Player_Punch;
+    private readonly InputAction m_Player_PunchTap;
+    private readonly InputAction m_Player_PunchHold;
     private readonly InputAction m_Player_NextCamera;
     private readonly InputAction m_Player_ExitHack;
     public struct PlayerActions
@@ -1016,7 +1049,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @PickupAndDropBomb => m_Wrapper.m_Player_PickupAndDropBomb;
         public InputAction @DetonateBomb => m_Wrapper.m_Player_DetonateBomb;
         public InputAction @HackCameras => m_Wrapper.m_Player_HackCameras;
-        public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @PunchTap => m_Wrapper.m_Player_PunchTap;
+        public InputAction @PunchHold => m_Wrapper.m_Player_PunchHold;
         public InputAction @NextCamera => m_Wrapper.m_Player_NextCamera;
         public InputAction @ExitHack => m_Wrapper.m_Player_ExitHack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1040,9 +1074,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @HackCameras.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
                 @HackCameras.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
                 @HackCameras.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHackCameras;
-                @Punch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
-                @Punch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
-                @Punch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunch;
+                @PunchTap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchTap;
+                @PunchTap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchTap;
+                @PunchTap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchTap;
+                @PunchHold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchHold;
+                @PunchHold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchHold;
+                @PunchHold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPunchHold;
                 @NextCamera.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
                 @NextCamera.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
                 @NextCamera.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNextCamera;
@@ -1065,9 +1102,12 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @HackCameras.started += instance.OnHackCameras;
                 @HackCameras.performed += instance.OnHackCameras;
                 @HackCameras.canceled += instance.OnHackCameras;
-                @Punch.started += instance.OnPunch;
-                @Punch.performed += instance.OnPunch;
-                @Punch.canceled += instance.OnPunch;
+                @PunchTap.started += instance.OnPunchTap;
+                @PunchTap.performed += instance.OnPunchTap;
+                @PunchTap.canceled += instance.OnPunchTap;
+                @PunchHold.started += instance.OnPunchHold;
+                @PunchHold.performed += instance.OnPunchHold;
+                @PunchHold.canceled += instance.OnPunchHold;
                 @NextCamera.started += instance.OnNextCamera;
                 @NextCamera.performed += instance.OnNextCamera;
                 @NextCamera.canceled += instance.OnNextCamera;
@@ -1206,7 +1246,8 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnPickupAndDropBomb(InputAction.CallbackContext context);
         void OnDetonateBomb(InputAction.CallbackContext context);
         void OnHackCameras(InputAction.CallbackContext context);
-        void OnPunch(InputAction.CallbackContext context);
+        void OnPunchTap(InputAction.CallbackContext context);
+        void OnPunchHold(InputAction.CallbackContext context);
         void OnNextCamera(InputAction.CallbackContext context);
         void OnExitHack(InputAction.CallbackContext context);
     }

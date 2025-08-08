@@ -10,11 +10,11 @@ namespace Game.Scripts.LiveObjects
 {
     public class Drone : MonoBehaviour
     {
-        private float _thrustInput; //DM applied with any Shift Key
-        private Vector2 _tiltInput;//DM
-        private float _ascendDescendInput;//DM
-        private float _rotateInput;//DM
-        private PlayerInputAction _input;//DM
+        private float _thrustInput; 
+        private Vector2 _tiltInput;
+        private float _ascendDescendInput;
+        private float _rotateInput;
+        private PlayerInputAction _input;
         private enum Tilt
         {
             NoTilt, Forward, Back, Left, Right
