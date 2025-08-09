@@ -69,7 +69,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""id"": ""ef1d1373-9a92-4a8f-a71d-9ea561ecaece"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap,Hold"",
+                    ""interactions"": ""Tap"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -78,7 +78,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""id"": ""3d12c594-4477-4864-a632-2db9e39eab93"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold,Tap"",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -369,7 +369,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3805bb6c-6244-432d-825b-ba6d704974ed"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Hold(duration=1)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PunchHold"",
@@ -380,7 +380,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""20953831-8fda-4c59-8721-c3590c3417ac"",
                     ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": ""Hold(duration=1)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PunchHold"",
